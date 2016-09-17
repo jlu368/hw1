@@ -1,4 +1,4 @@
-import bfs
+import bfs, greedy
 
 class Node():
     top = None
@@ -6,34 +6,48 @@ class Node():
     left = None
     right = None
     wall = False
-    visited = False
     point = False
+    x = -1
+    y = -1
+    manhattan = 0
+
+    def __lt__(self, other):
+        return self.manhattan < other.manhattan
+
+    def __gt__(self, other):
+        return self.manhattan > other.manhattan        
 
 def main():
-    with open('medium_maze.txt') as f:
+    with open('open_maze.txt') as f:
         content = f.readlines()
 
     content = [x.strip('\n') for x in content]
     maze = []
     temp_arr = []
     start = None
+    goal = None
 
     for i in range(0, len(content[0])):
         temp_node = Node()
         temp_node.wall = True
+        temp_node.x = i
+        temp_node.y = 0
         temp_arr.append(temp_node)
     maze.append(temp_arr.copy())
-    for x in range(1, len(content) - 1):
+    for y in range(1, len(content) - 1):
         maze.append([])
-        for i in range(0, len(content[x])):
-            node, maze = check_node(maze, content, x, i)
-            maze[x].append(node)
-            if content[x][i] == 'P':
+        for x in range(0, len(content[y])):
+            node, maze = check_node(maze, content, y, x)
+            maze[y].append(node)
+            if content[y][x] == 'P':
                 start = node
+            if content[y][x] == '.':
+                goal = node
 
     maze.append(temp_arr.copy())
 
-    result = bfs.bfs(start)
+    result = greedy.greedy(start, goal, 0)
+    
     print_maze(maze, result, start)
 
 def print_maze(maze, result, start):
@@ -50,21 +64,23 @@ def print_maze(maze, result, start):
         print()
 
 
-def check_node(maze, content, x, i):
+def check_node(maze, content, y, x):
     temp_node = Node()
-    if content[x][i] == '%':
+    if content[y][x] == '%':
         temp_node.wall = True
     else:
-        top = maze[x-1][i]
-        left = maze[x][i-1]
+        top = maze[y-1][x]
+        left = maze[y][x-1]
         if not top.wall:
             temp_node.top = top
             top.bottom = temp_node
         if not left.wall:
             temp_node.left = left
             left.right = temp_node
-        if content[x][i] == '.':
+        if content[y][x] == '.':
             temp_node.point = True
+    temp_node.x = x
+    temp_node.y = y
 
     return temp_node, maze
 
