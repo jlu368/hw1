@@ -27,7 +27,7 @@ def greedy(start, goal, max_steps):
             next.right.manhattan = manhattan(next.right, goal)
             frontier = insert_sorted(frontier, next.right, path, 0, len(frontier))
         print(len(frontier))
-        count += 1
+        #count += 1
 
 
 def manhattan(node, goal):

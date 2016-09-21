@@ -1,4 +1,4 @@
-import bfs, greedy
+import bfs, astar_search, greedy_search, newstar
 
 class Node():
     top = None
@@ -10,6 +10,7 @@ class Node():
     x = -1
     y = -1
     manhattan = 0
+
 
     def __lt__(self, other):
         return self.manhattan < other.manhattan
@@ -46,8 +47,11 @@ def main():
 
     maze.append(temp_arr.copy())
 
-    result = greedy.greedy(start, goal, 0)
-    
+    #result = bfs.bfs(start, goal)
+    #result = greedy_search.greedy(start, goal)
+    result = newstar.astar(start, goal)
+
+
     print_maze(maze, result, start)
 
 def print_maze(maze, result, start):
