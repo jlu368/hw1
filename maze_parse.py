@@ -1,4 +1,4 @@
-import bfs, astar_search, greedy_search, newstar
+import bfs, astar_search, greedy_search, newstar, multiple_goal
 
 class Node():
     top = None
@@ -19,7 +19,7 @@ class Node():
         return self.manhattan > other.manhattan        
 
 def main():
-    with open('open_maze.txt') as f:
+    with open('tinySearch.txt') as f:
         content = f.readlines()
 
     content = [x.strip('\n') for x in content]
@@ -49,10 +49,10 @@ def main():
 
     #result = bfs.bfs(start, goal)
     #result = greedy_search.greedy(start, goal)
-    result = newstar.astar(start, goal)
+    # result = newstar.astar(start, goal)
+    multiple_goal.mult(start, goals)
 
-
-    print_maze(maze, result, start)
+    # print_maze(maze, result, start)
 
 def print_maze(maze, result, start):
     for row in maze:
