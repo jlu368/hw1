@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import bfs, astar_search, greedy_search, newstar, multiple_goal
-=======
-import bfs, astar_search, greedy_search, newstar, IPython, sys
-from timeit import default_timer
->>>>>>> e7a317a509bb5934c8fcf9b1588f17409fba27e8
+import bfs, astar_search, greedy_search, newstar, multiple_goal, sys
+
 
 class Node():
     top = None
@@ -24,15 +20,11 @@ class Node():
         return self.manhattan > other.manhattan        
 
 def main():
-<<<<<<< HEAD
-    with open('tinySearch.txt') as f:
-=======
     if len(sys.argv) > 1:
         arg = sys.argv[1]
     else:
         arg = 0
     with open('big_maze.txt') as f:
->>>>>>> e7a317a509bb5934c8fcf9b1588f17409fba27e8
         content = f.readlines()
 
     content = [x.strip('\n') for x in content]
@@ -68,17 +60,11 @@ def main():
 
     #result = bfs.bfs(start, goal)
     #result = greedy_search.greedy(start, goal)
-<<<<<<< HEAD
     # result = newstar.astar(start, goal)
     multiple_goal.mult(start, goals)
 
     # print_maze(maze, result, start)
-=======
-    
-    result = newstar.astar(start, goal)
-    IPython.embed()
-    print_maze(maze, result, start)
->>>>>>> e7a317a509bb5934c8fcf9b1588f17409fba27e8
+
 
 def print_maze(maze, result, start):
     for row in maze:
