@@ -1,5 +1,7 @@
 import bfs, astar_search, greedy_search, newstar, multiple_goal, sys
 
+from string import ascii_letters
+
 
 class Node():
     top = None
@@ -10,6 +12,7 @@ class Node():
     point = False
     x = -1
     y = -1
+    order = None
     manhattan = 0
 
 
@@ -24,7 +27,7 @@ def main():
         arg = sys.argv[1]
     else:
         arg = 0
-    with open('big_maze.txt') as f:
+    with open('test_maze.txt') as f:
         content = f.readlines()
 
     content = [x.strip('\n') for x in content]
@@ -61,23 +64,34 @@ def main():
     #result = bfs.bfs(start, goal)
     #result = greedy_search.greedy(start, goal)
     # result = newstar.astar(start, goal)
-    multiple_goal.mult(start, goals)
+    result, coords = multiple_goal.mult(start, goal)
 
-    # print_maze(maze, result, start)
+    print_maze(maze, result, start, coords)
 
 
-def print_maze(maze, result, start):
+def print_maze(maze, result, start, coords):
+    count = 1
+    
     for row in maze:
         for point in row:
             if point.wall:
                 print('%', end="", flush=True)
             elif point == start:
                 print('P', end="", flush=True)
-            elif point.point or point in result:
-                print('.', end="", flush=True)
+            elif point in result:
+                if point.point:
+                    print(character(coords.index((point.y, point.x))), end="", flush=True)
+                else:
+                    print('.', end="", flush=True)
             else:
                 print(' ', end="", flush=True)
         print()
+
+def character(index):
+    if index < 10:
+        return index
+    else:
+        return ascii_letters[index - 10]
 
 
 def check_node(maze, content, y, x):
