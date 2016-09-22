@@ -1,4 +1,5 @@
-import bfs, astar_search, greedy_search, newstar
+import bfs, astar_search, greedy_search, newstar, IPython, sys
+from timeit import default_timer
 
 class Node():
     top = None
@@ -19,14 +20,21 @@ class Node():
         return self.manhattan > other.manhattan        
 
 def main():
-    with open('open_maze.txt') as f:
+    if len(sys.argv) > 1:
+        arg = sys.argv[1]
+    else:
+        arg = 0
+    with open('big_maze.txt') as f:
         content = f.readlines()
 
     content = [x.strip('\n') for x in content]
     maze = []
     temp_arr = []
     start = None
-    goal = None
+    if arg == "2":
+        goal = []
+    else:
+        goal = None
 
     for i in range(0, len(content[0])):
         temp_node = Node()
@@ -43,15 +51,18 @@ def main():
             if content[y][x] == 'P':
                 start = node
             if content[y][x] == '.':
-                goal = node
+                if arg == "2":
+                    goal.append(node)
+                else:
+                    goal = node
 
     maze.append(temp_arr.copy())
 
     #result = bfs.bfs(start, goal)
     #result = greedy_search.greedy(start, goal)
+    
     result = newstar.astar(start, goal)
-
-
+    IPython.embed()
     print_maze(maze, result, start)
 
 def print_maze(maze, result, start):
