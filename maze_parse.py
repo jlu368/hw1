@@ -15,6 +15,8 @@ class Node():
     order = None
     manhattan = 0
 
+    def __repr__(self):
+        return"({0}, {1})".format(self.y, self.x)
 
     def __lt__(self, other):
         return self.manhattan < other.manhattan
@@ -27,7 +29,7 @@ def main():
         arg = sys.argv[1]
     else:
         arg = 0
-    with open('test_maze.txt') as f:
+    with open('tinySearch.txt') as f:
         content = f.readlines()
 
     content = [x.strip('\n') for x in content]
@@ -63,15 +65,15 @@ def main():
 
     #result = bfs.bfs(start, goal)
     #result = greedy_search.greedy(start, goal)
-    # result = newstar.astar(start, goal)
+    #result = newstar.astar(start, goal)
     result, coords = multiple_goal.mult(start, goal)
+    import IPython
+    IPython.embed()
 
     print_maze(maze, result, start, coords)
 
 
 def print_maze(maze, result, start, coords):
-    count = 1
-    
     for row in maze:
         for point in row:
             if point.wall:

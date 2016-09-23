@@ -23,22 +23,22 @@ def mult(start, goals):
 	opendict = {}
 	closeset = set()
 	front = []
-	heapq.heappush(front, ((manhat_all(start, closeset, goals), start), [start]))
+	heapq.heappush(front, ((manhat_all(start, closeset, goals), start), 
+		[start], goals, []))
 	openset.add(start)
 	opendict[start] = 0
-	paths = []
-	coords = []
 	while not openset == None:
 		currtuple = heapq.heappop(front)
 		curr = currtuple[0][1]
 		currheur = currtuple[0][0]
 		currpath = currtuple[1]
+		currgoals = currtuple[2]
+		# print(currgoals)
 		if curr.point:
-			goals.remove(curr)
-			paths.extend(currpath)
-			coords.append((curr.y, curr.x))
-			if not goals:
-				return paths, coords
+			currgoals.remove(curr)
+			currtuple[3].append((curr.y, curr.x))
+			if not currgoals:
+				return currpath, currtuple[3]
 			
 		temp = []
 		if curr.left:
@@ -50,21 +50,23 @@ def mult(start, goals):
 		if curr.bottom:
 			temp.append(curr.bottom)
 		for i in temp:
-			succ_g = currheur - manhat_all(curr, closeset, goals) + 1
+			# succ_g = currheur - manhat_all(curr, closeset, currgoals) + 1
+			temp_heur = manhat_all(i, closeset, currgoals)
 			if i in openset:
-				if succ_g > opendict[i]:
+				if temp_heur > currheur:
 					continue
 			elif i in closeset:
-				if succ_g > opendict[i]:
+				if temp_heur > currheur:
 					continue
 				closeset.remove(i)
 				openset.add(i)
 			else:
 				openset.add(i)
-				succ_h = succ_g + manhat_all(i, closeset, goals)
-				heapq.heappush(front, ((succ_h, i), currpath + [i]))
+				# succ_h = succ_g + manhat_all(i, closeset, currgoals)
+				heapq.heappush(front, ((temp_heur, i), currpath + [i], 
+					currgoals, currtuple[3]))
 
-			opendict[i] = succ_g
+			# opendict[i] = succ_g
 		closeset.add(curr)
 
 def manhat_all(node, closeset, goals):
