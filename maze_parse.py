@@ -1,5 +1,5 @@
 import bfs, astar_search, greedy_search, newstar, multiple_goal, sys
-
+import copy, time
 from string import ascii_letters
 
 
@@ -14,6 +14,8 @@ class Node():
     y = -1
     order = None
     manhattan = 0
+    def __init__(self):
+        self.neighbors = []
 
     def __repr__(self):
         return"({0}, {1})".format(self.y, self.x)
@@ -24,12 +26,14 @@ class Node():
     def __gt__(self, other):
         return self.manhattan > other.manhattan        
 
+# To run part one, use the call python3 maze_parse.py 1
+# To run part two, use the call python3 maze_parse.py 2
 def main():
     if len(sys.argv) > 1:
         arg = sys.argv[1]
     else:
         arg = 0
-    with open('tinySearch.txt') as f:
+    with open('bigDots.txt') as f:
         content = f.readlines()
 
     content = [x.strip('\n') for x in content]
@@ -57,20 +61,23 @@ def main():
                 start = node
             if content[y][x] == '.':
                 if arg == "2":
-                    goal.append(node)
+                    goal.append(node)   
                 else:
                     goal = node
-
     maze.append(temp_arr.copy())
 
-    #result = bfs.bfs(start, goal)
-    #result = greedy_search.greedy(start, goal)
-    #result = newstar.astar(start, goal)
+    start_time = time.time()
+    # result = bfs.dfs(start)
+    # result = greedy_search.greedy(start, goal)
+    # result, expansion = newstar.astar(start, goal)
     result, coords = multiple_goal.mult(start, goal)
-    import IPython
-    IPython.embed()
-
-    print_maze(maze, result, start, coords)
+    end = time.time()
+    
+    print(end - start_time)
+    # if arg == '2':
+    #     print_maze(maze, result, start, coords)
+    # else:
+    #     print_maze_(maze, result, start)
 
 
 def print_maze(maze, result, start, coords):
@@ -85,6 +92,19 @@ def print_maze(maze, result, start, coords):
                     print(character(coords.index((point.y, point.x))), end="", flush=True)
                 else:
                     print('.', end="", flush=True)
+            else:
+                print(' ', end="", flush=True)
+        print()
+
+def print_maze_(maze, result, start):
+    for row in maze:
+        for point in row:
+            if point.wall:
+                print('%', end="", flush=True)
+            elif point == start:
+                print('P', end="", flush=True)
+            elif point in result or point.point:
+                print('.', end="", flush=True)
             else:
                 print(' ', end="", flush=True)
         print()

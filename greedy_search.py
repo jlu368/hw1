@@ -10,14 +10,16 @@ def greedy(start, goal):
 	heapq.heappush(front, ((manhat(start, goal), start), [start]))
 	openset.add(start)
 	opendict[start] = 0
+	expansion = 0
 	while not openset == None:
 		currtuple = heapq.heappop(front)
 		curr = currtuple[0][1]
 		currheur = currtuple[0][0]
 		currpath = currtuple[1]
 		if curr.point:
+			print("Greedy: ", expansion+1)
 			return currpath
-			break
+
 		temp = []
 		if curr.left:
 			temp.append(curr.left)
@@ -42,60 +44,10 @@ def greedy(start, goal):
 				heapq.heappush(front, ((succ_h, i), currpath + [i]))
 			opendict[i] = succ_h
 		closeset.add(curr)
+		expansion += 1
 		
 
 
 
 def manhat(node, goal):
 	return math.fabs(node.y - goal.y) + math.fabs(node.x - goal.x)
-
-			
-# def greedy(start, goal):
-# 	counter = 0
-# 	openset = set() #set.remove(), set.add()
-# 	closedset = set()
-# 	path = []
-# 	dict = {} #Corresponding coordinates key:coord -> value:f
-# 	q = Queue()
-# 	q.enqueue((manhat(start, goal), start))
-# 	dict[(start.y, start.x)] = (manhat(start, goal))
-# 	openset.add(start)
-# 	while openset:
-# 		#counter = counter + 1
-# 		#print(counter)
-# 		curr = q.dequeue()
-# 		currdist = curr[0]
-# 		currnode = curr[1]
-# 		print(currnode.y, currnode.x)
-# 		if currnode in openset:
-# 			openset.remove(currnode)
-# 		temp = []
-# 		if currnode.left:
-# 			temp.append(currnode.left)
-# 		if currnode.right:
-# 			temp.append(currnode.right)
-# 		if currnode.top:
-# 			temp.append(currnode.top)
-# 		if currnode.bottom:
-# 			temp.append(currnode.bottom)
-# 		for i in temp:
-# 			if i.point:
-# 				print("Find the goal!")
-# 				break
-# 			succ_g = 1 + currdist - manhat(currnode, goal)
-# 			succ_h = manhat(i, goal)
-# 			succ_f = succ_g + succ_h
-# 			if (i.y, i.x) not in dict:
-# 				dict[(i.y, i.x)] = succ_f
-# 			#print(succ_f)
-# 			if i in openset and (succ_f > dict[(i.y, i.x)]):
-# 				continue
-# 			if i in closedset and (succ_f > dict[(i.y, i.x)]):
-# 				continue
-		    
-# 			openset.add(i)
-# 			dict[(i.y, i.x)] = succ_f
-# 			q.enqueue((succ_f, i))
-# 		closedset.add(currnode)
-# 		path.append(currnode)
-# 	return path

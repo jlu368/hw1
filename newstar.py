@@ -14,14 +14,16 @@ def astar(start, goal):
 	heapq.heappush(front, ((manhat(start, goal), start), [start]))
 	openset.add(start)
 	opendict[start] = 0
+	expansion = 0
 	while not openset == None:
 		currtuple = heapq.heappop(front)
 		curr = currtuple[0][1]
 		currheur = currtuple[0][0]
 		currpath = currtuple[1]
-		if curr.point:
-			return currpath
-			break
+		if curr == goal:
+			# print("A*: ", expansion+1)
+			return currpath, expansion + 1
+
 		temp = []
 		if curr.left:
 			temp.append(curr.left)
@@ -31,6 +33,7 @@ def astar(start, goal):
 			temp.append(curr.top)
 		if curr.bottom:
 			temp.append(curr.bottom)
+
 		for i in temp:
 			succ_g = currheur - manhat(curr, goal) + 1
 			if i in openset:
@@ -47,6 +50,7 @@ def astar(start, goal):
 				heapq.heappush(front, ((succ_h, i), currpath + [i]))
 			opendict[i] = succ_g
 		closeset.add(curr)
+		expansion += 1
 		
 
 
