@@ -34,7 +34,7 @@ def main():
         arg = sys.argv[1]
     else:
         arg = 0
-    with open('bigDots.txt') as f:
+    with open('tinySearch.txt') as f:
         content = f.readlines()
 
     content = [x.strip('\n') for x in content]
@@ -71,16 +71,16 @@ def main():
     # result = bfs.dfs(start)
     # result = greedy_search.greedy(start, goal)
     # result, expansion = newstar.astar(start, goal)
-    # result, coords = multiple_goal.mult(start, goal)
-    result, subcost, expan = suboptimal.subop(start, goal, 1.2)
+    result, coords = multiple_goal.mult(start, goal)
+    #result, subcost, expan = suboptimal.subop(start, goal, 1.2)
     end = time.time()
-    print("Path Cost: ", subcost)
-    print("Nodes Expanded:", expan)
+    # print("Path Cost: ", subcost)
+    # print("Nodes Expanded:", expan)
     print(end - start_time)
-    # if arg == '2':
-    #     print_maze(maze, result, start, coords)
-    # else:
-    print_maze_(maze, result, start)
+    if arg == '2':
+        print_maze(maze, result, start, coords)
+    else:
+        print_maze_(maze, result, start)
 
 
 def print_maze(maze, result, start, coords):
